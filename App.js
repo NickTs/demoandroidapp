@@ -1,114 +1,119 @@
-/**
- * Sample React Native App
- * https://github.com/facebook/react-native
- *
- * @format
- * @flow
- */
+import React, {Component} from 'react';
+import { StyleSheet, View, ScrollView, ActivityIndicator, Image } from 'react-native';
 
-import React from 'react';
-import {
-  SafeAreaView,
-  StyleSheet,
-  ScrollView,
-  View,
-  Text,
-  StatusBar,
-} from 'react-native';
+import Nav from './src/Nav/nav'
+import Generate from './src/Generator/generate'
+import ListItem from './src/Generator/listitem'
+import Input from './src/Input/input'
+import PickerComponent from './src/Picker/picker'
+import card from './assets/card-3.jpg'
+import ModalComponent from './src/Modal/modal'
 
-import {
-  Header,
-  LearnMoreLinks,
-  Colors,
-  DebugInstructions,
-  ReloadInstructions,
-} from 'react-native/Libraries/NewAppScreen';
 
-const App: () => React$Node = () => {
-  return (
-    <>
-      <StatusBar barStyle="dark-content" />
-      <SafeAreaView>
+class App extends Component {
+
+  state = {
+    nameOfApp:"PacketMeccanica mobile app",
+    random:[20,15],
+    loading:false
+  }
+
+  onAddRandom = () => {
+    const random = Math.floor(Math.random()*100) +1
+    this.setState(prevState =>{
+      return{
+        random:[...prevState.random, random]
+      }
+    })
+  }
+
+  onItemDelete = (i) =>{
+    const newArray = this.state.random.filter((item,index) => {
+      return i !== index;
+    })
+    this.setState({
+      random: newArray
+    })
+    // alert(i)
+  }
+
+  render() {
+    return (
+      <View style={styles.container}>
+        <Nav nameOfApp={this.state.nameOfApp}></Nav>
+
+        <Image
+          source={{uri:'https://picsum.photos/id/1043/400/400'}}
+          // source={card}
+          style={styles.card}
+          resizeMode="contain"
+          // onLoadEnd={()=>alert('image loaded')}
+        />
+
+
         <ScrollView
-          contentInsetAdjustmentBehavior="automatic"
-          style={styles.scrollView}>
-          <Header />
-          {global.HermesInternal == null ? null : (
-            <View style={styles.engine}>
-              <Text style={styles.footer}>Engine: Hermes</Text>
-            </View>
-          )}
-          <View style={styles.body}>
-            <View style={styles.sectionContainer}>
-              <Text style={styles.sectionTitle}>Step One</Text>
-              <Text style={styles.sectionDescription}>
-                Edit <Text style={styles.highlight}>App.js</Text> to change this
-                screen and then come back to see your edits.
-              </Text>
-            </View>
-            <View style={styles.sectionContainer}>
-              <Text style={styles.sectionTitle}>See Your Changes</Text>
-              <Text style={styles.sectionDescription}>
-                <ReloadInstructions />
-              </Text>
-            </View>
-            <View style={styles.sectionContainer}>
-              <Text style={styles.sectionTitle}>Debug</Text>
-              <Text style={styles.sectionDescription}>
-                <DebugInstructions />
-              </Text>
-            </View>
-            <View style={styles.sectionContainer}>
-              <Text style={styles.sectionTitle}>Learn More</Text>
-              <Text style={styles.sectionDescription}>
-                Read the docs to discover what to do next:
-              </Text>
-            </View>
-            <LearnMoreLinks />
+          style={{width:'100%'}}
+          // onContentSizeChange={(w,h) => alert(h)}
+          // onMomentumScrollBegin={()=>alert('begin')}
+          // onMomentumScrollEnd={()=>alert('end')}
+          // onScroll={()=>alert('scrolling')}
+        >
+          <View style={styles.wripper}>
+            <Generate add={this.onAddRandom}></Generate>
+            <ListItem items={this.state.random} delete={this.onItemDelete}></ListItem>
+
+            <Input></Input>
+{/*
+
+            <PickerComponent/>
+
+*/}
+
+{/*
+            <ActivityIndicator
+              size="large"
+              color="red"
+              animation={this.state.loading}
+            >
+
+            </ActivityIndicator>
+*/}
+
+
+
+{/*
+            <ModalComponent/>
+*/}
           </View>
+
         </ScrollView>
-      </SafeAreaView>
-    </>
-  );
-};
+
+
+      </View>
+    );
+  }
+}
 
 const styles = StyleSheet.create({
-  scrollView: {
-    backgroundColor: Colors.lighter,
+  container: {
+    flex: 1,
+    backgroundColor: '#fff',
+    alignItems: 'center',
+    justifyContent: 'flex-start',
+    marginTop: 20
   },
-  engine: {
-    position: 'absolute',
-    right: 0,
+  wripper: {
+    flex:1,
+    width:'100%',
+    padding: 20,
+    alignItems: 'center',
+    justifyContent: 'flex-start'
   },
-  body: {
-    backgroundColor: Colors.white,
-  },
-  sectionContainer: {
-    marginTop: 32,
-    paddingHorizontal: 24,
-  },
-  sectionTitle: {
-    fontSize: 24,
-    fontWeight: '600',
-    color: Colors.black,
-  },
-  sectionDescription: {
-    marginTop: 8,
-    fontSize: 18,
-    fontWeight: '400',
-    color: Colors.dark,
-  },
-  highlight: {
-    fontWeight: '700',
-  },
-  footer: {
-    color: Colors.dark,
-    fontSize: 12,
-    fontWeight: '600',
-    padding: 4,
-    paddingRight: 12,
-    textAlign: 'right',
-  },
+  card: {
+    width:'100%',
+    height:200,
+    marginTop: 10
+  }
 });
 
-export default App;
+export default App
