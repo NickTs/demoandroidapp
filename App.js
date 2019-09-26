@@ -43,8 +43,8 @@ class App extends Component {
         <Nav nameOfApp={this.state.nameOfApp}></Nav>
 
         <Image
-          source={{uri:'https://picsum.photos/id/1043/400/400'}}
-          // source={card}
+          // source={{uri:'https://picsum.photos/id/1043/400/400'}}
+          source={card}
           style={styles.card}
           resizeMode="contain"
           // onLoadEnd={()=>alert('image loaded')}
